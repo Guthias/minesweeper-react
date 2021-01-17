@@ -1,13 +1,52 @@
-body {
+html, body, #root{
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  height: 100%;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.game{
+  font-family: sans-serif;
+  background-color: #1a1a1a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+.game-status-area{
+  color: #fff;
+  font-size: 24px;
+  display: flex;
+  margin-bottom: 10px;
+  user-select: none;
+}
+.game-status:nth-child(1){
+  padding-right: 15px;
+}
+.game-status:nth-child(2){
+  padding-left: 15px;
+}
+.board{
+  display: flex;
+  flex-direction: column;
+}
+.board-row{
+  display: flex;
+  flex-direction: row;
+}
+.square{
+  width: 35px;
+  height: 35px;
+  border: 1px solid #000;
+  line-height: 35px;
+  font-size: 23px;
+  font-weight: 700;
+  text-align: center;
+  user-select: none;
+  cursor: pointer;
+  background-color: #117DDB;
+  color: #fff;
+  transition: ease-in-out .15s background-color;
+}
+.square:hover{
+  background-color: #07345C;
 }

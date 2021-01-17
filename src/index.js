@@ -1,17 +1,130 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+
+class Square extends React.Component{
+  render() {
+    return(
+     <div className="square"></div> 
+    );
+  }
+}
+
+class Board extends React.Component{
+  render() {
+    return(
+      <div className="board">
+        <div className="board-row">
+          <Square/>
+          <Square/>
+          <Square/>
+          <Square/>
+          <Square/>
+          <Square/>
+          <Square/>
+          <Square/>
+        </div>
+
+        <div className="board-row">
+          <Square/>
+          <Square/>
+          <Square/>
+          <Square/>
+          <Square/>
+          <Square/>
+          <Square/>
+          <Square/>
+        </div>
+
+        <div className="board-row">
+          <Square/>
+          <Square/>
+          <Square/>
+          <Square/>
+          <Square/>
+          <Square/>
+          <Square/>
+          <Square/>
+        </div>
+
+        <div className="board-row">
+          <Square/>
+          <Square/>
+          <Square/>
+          <Square/>
+          <Square/>
+          <Square/>
+          <Square/>
+          <Square/>
+        </div>
+
+        <div className="board-row">
+          <Square/>
+          <Square/>
+          <Square/>
+          <Square/>
+          <Square/>
+          <Square/>
+          <Square/>
+          <Square/>
+        </div>
+
+        <div className="board-row">
+          <Square/>
+          <Square/>
+          <Square/>
+          <Square/>
+          <Square/>
+          <Square/>
+          <Square/>
+          <Square/>
+        </div>
+
+        <div className="board-row">
+          <Square/>
+          <Square/>
+          <Square/>
+          <Square/>
+          <Square/>
+          <Square/>
+          <Square/>
+          <Square/>
+        </div>
+
+        <div className="board-row">
+          <Square/>
+          <Square/>
+          <Square/>
+          <Square/>
+          <Square/>
+          <Square/>
+          <Square/>
+          <Square/>
+        </div>
+      </div>
+    );
+  }
+}
+
+class Game extends React.Component {
+  render() {
+    return (
+      <div className="game">
+        <div className="game-status-area">
+          <div className="game-status">
+            Bombs: 00
+          </div>
+          <div className="game-status">
+            Time: 000
+          </div>
+        </div>
+        <Board/>
+      </div>
+    );
+  }
+}
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <Game />,
   document.getElementById('root')
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

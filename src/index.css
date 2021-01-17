@@ -47,6 +47,10 @@ html, body, #root{
   color: #fff;
   transition: ease-in-out .15s background-color;
 }
-.square:hover{
+.square:not(.active):hover{
   background-color: #07345C;
+}
+.square.active{
+  background-color: #052642;
+  cursor: pointer;
 }

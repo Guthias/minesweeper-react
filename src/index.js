@@ -6,11 +6,14 @@ class Square extends React.Component{
   render() {
     if(this.props.state === 0){
       return(
-        <div className="square" onClick={() => this.props.onClick()}></div>
+        <div className="square" onClick={() => this.props.onClick()} onContextMenu={() => this.props.onContextMenu()}></div>
       );
-    } else{
+    } else if(this.props.state === 2){
       return(
-        <div className="square active">
+      <div className="square flag" onClick={() => this.props.onClick()} onContextMenu={() => this.props.onContextMenu()}>🚩</div>);
+    }else{
+      return(
+        <div className="square active" onClick={() => this.props.onClick()} onContextMenu={() => this.props.onContextMenu()}>
           {this.props.value}
         </div> 
        );
@@ -97,19 +100,25 @@ class Board extends React.Component{
     return boardTable;
   }
 
-  squareClick(x, y){
+  squareClick(click, x, y){
     const clickTable = this.state.clickTable.slice();
-    clickTable[y][x] = 1
-    console.log("x: ", x, "y: ", y)
+    
+    if(click === 0 && clickTable[y][x] === 0){
+      clickTable[y][x] = 1;
+    } else if(click === 1 && clickTable[y][x] === 0){
+      clickTable[y][x] = 2;
+    } else if(click === 1 && clickTable[y][x] === 2){
+      clickTable[y][x] = 0;
+    }
     this.setState({
       clickTable: clickTable,
     });
   }
   renderSquare(i, c, y, x){
-    return <Square value={i} state={c} onClick={() => this.squareClick(x, y)}/>
+    return <Square value={i} state={c} onClick={() => this.squareClick(0, x, y)} 
+    onContextMenu={() => this.squareClick(1, x, y)}/>
   }
   render() {
-    
     return(
       <div className="board">
         <div className="board-row">

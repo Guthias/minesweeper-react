@@ -265,41 +265,58 @@ class Game extends React.Component {
 
     clickTable[y][x] = 1;
     //Left Top
-    if(this.state.bombTable[y - 1][x -1] !== "💣" && x > 0 && y > 0){
-      clickTable[y - 1][x - 1] = 1;
+    if(x > 0 && y > 0){  
+      if(this.state.bombTable[y - 1][x -1] !== "💣"){
+        clickTable[y - 1][x - 1] = 1;
+      }
     }
     //Top
-    if(this.state.bombTable[y - 1][x] !== "💣" && y > 0){
-      clickTable[y - 1][x] = 1;
+    if(y > 0){  
+      if(this.state.bombTable[y - 1][x] !== "💣"){
+        clickTable[y - 1][x] = 1;
+      }
     }
     //Right Top
-    if(this.state.bombTable[y - 1][x + 1] !== "💣" && x < clickTable[y].length - 1 && y > 0){
-      clickTable[y - 1][x + 1] = 1;
+    if( x < clickTable[y].length - 1 && y > 0){  
+      if(this.state.bombTable[y - 1][x + 1] !== "💣"){
+        clickTable[y - 1][x + 1] = 1;
+      }
     }
     //Right
-    if(this.state.bombTable[y][x - 1] !== "💣" && x < clickTable[y].length - 1){
-      clickTable[y][x + 1] = 1;
+    if(x < clickTable[y].length - 1){
+      if(this.state.bombTable[y][x - 1] !== "💣"){
+        clickTable[y][x + 1] = 1;
+      }
     }
     //Bottom Right
-    if(this.state.bombTable[y + 1][x + 1] !== "💣"  && x < clickTable[y].length - 1 && y < clickTable.length - 1){
-      clickTable[y + 1][x + 1] = 1;
+    if(x < clickTable[y].length - 1 && y < clickTable.length - 1){
+      if(this.state.bombTable[y + 1][x + 1] !== "💣"){
+        clickTable[y + 1][x + 1] = 1;
+      }
     }
     //Bottom
-    if(this.state.bombTable[y + 1][x] !== "💣"  && y < clickTable.length - 1){
-      clickTable[y + 1][x] = 1;
+    if(y < clickTable.length - 1){
+      if(this.state.bombTable[y + 1][x] !== "💣"){
+        clickTable[y + 1][x] = 1;
+      }
     }
     //Bottom Left
-    if(this.state.bombTable[y + 1][x -1] !== "💣" && x > 0 && y < clickTable.length - 1){
-      clickTable[y + 1][x - 1] = 1;
+    if(x > 0 && y < clickTable.length - 1){
+      if(this.state.bombTable[y + 1][x -1] !== "💣"){
+        clickTable[y + 1][x - 1] = 1;
+      }
     }
     //Left
-    if(this.state.bombTable[y - 1][x -1] !== "💣" && x > 0){
-      clickTable[y][x - 1] = 1;
+    if(x > 0){
+      if(this.state.bombTable[y][x -1] !== "💣"){
+        clickTable[y][x - 1] = 1;
+      }
     }
-
+       
     this.setState({
-      clickTable: clickTable.length,
-    })
+      clickTable: clickTable,
+    });
+
   }
 
   squareClick(click, x, y){

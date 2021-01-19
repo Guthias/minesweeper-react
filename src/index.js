@@ -121,13 +121,16 @@ class Board extends React.Component{
     );
   }
 }
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 class Game extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      bombTable: this.createBoard(8, 8, 10),
-      clickTable: this.emptyBoard(8, 8, 10),
+      bombTable: this.createBoard(8, 8, 1),
+      clickTable: this.emptyBoard(8, 8),
       countOff: true,
       remainingBombs: 10,
       timer: 0,
@@ -135,16 +138,35 @@ class Game extends React.Component {
       firstTimer: true,
     }
   }
-  gameOver(){
+
+  async gameOver(){
+    const clickTable = this.state.clickTable.slice();
     this.setState({
-      lose: true,
       countOff: true,
     });
+    for(let y = 0; y < clickTable.length; y++){
+      for(let x = 0; x < clickTable[y].length; x++){
+        if(this.state.bombTable[y][x] === "💣"){
+          await sleep(100);
+          clickTable[y][x] = 1;
+          this.setState({
+            clickTable: clickTable,
+          });      
+        }
+      }
+        
+    }
+    setTimeout(() =>{
+      this.setState({
+        lose: true,
+      });
+    }, 2500)
+    
   }
   newGame(){
     this.setState({
-      bombTable: this.createBoard(8, 8, 10),
-      clickTable: this.emptyBoard(8, 8, 10),
+      bombTable: this.createBoard(8, 8, 1),
+      clickTable: this.emptyBoard(8, 8),
       timer: 0,
       lose: false,
       countOff: false,
@@ -237,14 +259,63 @@ class Game extends React.Component {
     }
     return boardTable;
   }
+  
+  revealEmpty(x, y){
+    let clickTable = this.state.clickTable.slice();
+
+    clickTable[y][x] = 1;
+    //Left Top
+    if(this.state.bombTable[y - 1][x -1] !== "💣" && x > 0 && y > 0){
+      clickTable[y - 1][x - 1] = 1;
+    }
+    //Top
+    if(this.state.bombTable[y - 1][x] !== "💣" && y > 0){
+      clickTable[y - 1][x] = 1;
+    }
+    //Right Top
+    if(this.state.bombTable[y - 1][x + 1] !== "💣" && x < clickTable[y].length - 1 && y > 0){
+      clickTable[y - 1][x + 1] = 1;
+    }
+    //Right
+    if(this.state.bombTable[y][x - 1] !== "💣" && x < clickTable[y].length - 1){
+      clickTable[y][x + 1] = 1;
+    }
+    //Bottom Right
+    if(this.state.bombTable[y + 1][x + 1] !== "💣"  && x < clickTable[y].length - 1 && y < clickTable.length - 1){
+      clickTable[y + 1][x + 1] = 1;
+    }
+    //Bottom
+    if(this.state.bombTable[y + 1][x] !== "💣"  && y < clickTable.length - 1){
+      clickTable[y + 1][x] = 1;
+    }
+    //Bottom Left
+    if(this.state.bombTable[y + 1][x -1] !== "💣" && x > 0 && y < clickTable.length - 1){
+      clickTable[y + 1][x - 1] = 1;
+    }
+    //Left
+    if(this.state.bombTable[y - 1][x -1] !== "💣" && x > 0){
+      clickTable[y][x - 1] = 1;
+    }
+
+    this.setState({
+      clickTable: clickTable.length,
+    })
+  }
 
   squareClick(click, x, y){
     const clickTable = this.state.clickTable.slice();
     let remainingBombs = this.state.remainingBombs;
 
-    if(click === 0 && clickTable[y][x] === 0 && this.state.bombTable[y][x] !== "💣"){
+    if(this.state.countOff){
+      return
+    }
+
+    if(click === 0 && this.state.bombTable[y][x] === null){
+      this.revealEmpty(x, y);
+    } else if(click === 0 && clickTable[y][x] === 0 && this.state.bombTable[y][x] !== ("💣" || null)){
       clickTable[y][x] = 1;
     } else if(click === 0 && this.state.bombTable[y][x] === "💣"){
+      clickTable[y][x] = 1;
       this.gameOver();
     } else if(click === 1 && clickTable[y][x] === 0){
       clickTable[y][x] = 2;

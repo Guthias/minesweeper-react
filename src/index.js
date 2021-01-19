@@ -131,19 +131,41 @@ class Game extends React.Component {
       countOff: true,
       remainingBombs: 10,
       timer: 0,
+      lose: true,
+      firstTimer: true,
     }
   }
+  gameOver(){
+    this.setState({
+      lose: true,
+      countOff: true,
+    });
+  }
+  newGame(){
+    this.setState({
+      bombTable: this.createBoard(8, 8, 10),
+      clickTable: this.emptyBoard(8, 8, 10),
+      timer: 0,
+      lose: false,
+      countOff: false,
+    })
+  }
 
-  
-    
-  countTime(){
+  disableSecondTimer(){
+    this.setState({
+      firstTimer: false,
+    });
+  }
+  countTime(){    
     setInterval(() => {
       let timer = this.state.timer
-      timer += 1;
-      this.setState({
-        timer: timer,
-        countOff: false,
-      });
+      if(!this.state.countOff){
+        timer += 1;
+        this.setState({
+          timer: timer,
+          countOff: false,
+        });
+      }
     }, 1000)
   }
 
@@ -220,8 +242,10 @@ class Game extends React.Component {
     const clickTable = this.state.clickTable.slice();
     let remainingBombs = this.state.remainingBombs;
 
-    if(click === 0 && clickTable[y][x] === 0){
+    if(click === 0 && clickTable[y][x] === 0 && this.state.bombTable[y][x] !== "💣"){
       clickTable[y][x] = 1;
+    } else if(click === 0 && this.state.bombTable[y][x] === "💣"){
+      this.gameOver();
     } else if(click === 1 && clickTable[y][x] === 0){
       clickTable[y][x] = 2;
       remainingBombs -= 1;
@@ -234,28 +258,62 @@ class Game extends React.Component {
       remainingBombs: remainingBombs,
     });
   }
-  
-  render() {
-    if(this.state.countOff){
-      this.countTime();      
+
+  componentDidMount(){
+    if(this.state.firstTimer){
+      this.countTime();
+      this.disableSecondTimer();     
     }
-    return (
-      <div className="game">
-        <div className="game-status-area">
-          <div className="game-status">
-            Bombs: {this.state.remainingBombs}
+  }
+  render() {
+    if(this.state.lose){
+      return(
+        <div className="game">
+          <div className="game-status-area">
+            <div className="game-status">
+              Bombs: {this.state.remainingBombs}
+            </div>
+            <div className="game-status">
+              Time: {this.state.timer}
+            </div>
           </div>
-          <div className="game-status">
-            Time: {this.state.timer}
+          <div className="board-area">
+            <Board
+              bombTable={this.state.bombTable}
+              clickTable={this.state.clickTable}
+              onClick={(click, x, y) => this.squareClick(click, x, y)}
+            />
+
+            <div className="lose-area">
+              <div className="lose-game-title">
+                GAME<br></br>OVER
+              </div>
+              <button className="lose-game-button"  onClick={() => this.newGame()}>
+                New Game
+              </button>
+            </div>
           </div>
         </div>
-        <Board
-          bombTable={this.state.bombTable}
-          clickTable={this.state.clickTable}
-          onClick={(click, x, y) => this.squareClick(click, x, y)}
-        />
-      </div>
-    );
+      );
+    }else{
+      return (
+        <div className="game">
+          <div className="game-status-area">
+            <div className="game-status">
+              Bombs: {this.state.remainingBombs}
+            </div>
+            <div className="game-status">
+              Time: {this.state.timer}
+            </div>
+          </div>
+          <Board
+            bombTable={this.state.bombTable}
+            clickTable={this.state.clickTable}
+            onClick={(click, x, y) => this.squareClick(click, x, y)}
+          />
+        </div>
+      ); 
+    }
   }
 }
 
